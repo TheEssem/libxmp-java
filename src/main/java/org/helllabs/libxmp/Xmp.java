@@ -48,6 +48,10 @@ public final class Xmp {
 	static final int PLAYER_VOLUME = 7;					// Player module volume
 	static final int PLAYER_STATE = 8;					// Internal player state
 	static final int PLAYER_SMIX_VOLUME = 9;			// SMIX volume
+	static final int PLAYER_DEFPAN = 10;				// Default pan setting
+	static final int PLAYER_MODE = 11;					// Player personality
+	static final int PLAYER_MIXER_TYPE = 12;			// Current mixer
+	static final int PLAYER_VOICES = 13;				// Maximum number of mixer voices
 
 	// interpolation types
 	public static final int INTERP_NEAREST = 0;			// Nearest neighbor
@@ -56,7 +60,7 @@ public final class Xmp {
 
 	// dsp effect types
 	public static final int DSP_LOWPASS = 1 << 0;		// Lowpass filter effect
-	public static final int DSP_ALL = DSP_LOWPASS;	
+	public static final int DSP_ALL = DSP_LOWPASS;
 
 	// player state
 	public static final int STATE_UNLOADED = 0;			// Context created
@@ -67,6 +71,7 @@ public final class Xmp {
 	public static final int FLAGS_VBLANK = 1 << 0;		// Use vblank timing
 	public static final int FLAGS_FX9BUG = 1 << 1;		// Emulate FX9 bug
 	public static final int FLAGS_FIXLOOP = 1 << 2;		// Emulate sample loop bug
+	public static final int FLAGS_A500 = 1 << 3;		// Use Paula mixer in Amiga modules
 
 	// sample flags
 	public static final int SMPCTL_SKIP = 1 << 0;		// Don't load samples

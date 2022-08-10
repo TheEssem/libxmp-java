@@ -202,6 +202,22 @@ public class Player {
 		return Xmp.getPlayer(ctx, Xmp.PLAYER_SMIX_VOLUME);
 	}
 
+	public int getDefaultPanning() {
+		return Xmp.getPlayer(ctx, Xmp.PLAYER_DEFPAN);
+	}
+
+	public int getPlayerMode() {
+		return Xmp.getPlayer(ctx, Xmp.PLAYER_MODE);
+	}
+
+	public int getMixerType() {
+		return Xmp.getPlayer(ctx, Xmp.PLAYER_MIXER_TYPE);
+	}
+
+	public int getMaxVoices() {
+		return Xmp.getPlayer(ctx, Xmp.PLAYER_VOICES);
+	}
+
 	static private void checkParameterSet(final int code) {
 		switch (code) {
 		case -Xmp.ERROR_INVALID:
@@ -221,7 +237,7 @@ public class Player {
 		checkParameterSet(Xmp.setPlayer(ctx, Xmp.PLAYER_MIX, val));
 	}
 	
-	public void setvoiderpolation(final int val) {
+	public void setInterpolation(final int val) {
 		checkParameterSet(Xmp.setPlayer(ctx, Xmp.PLAYER_INTERP, val));
 	}
 	
@@ -251,6 +267,22 @@ public class Player {
 	
 	public void setSampleMixerVolume(final int val) {
 		checkParameterSet(Xmp.setPlayer(ctx, Xmp.PLAYER_SMIX_VOLUME, val));
+	}
+
+	public void setDefaultPanning(final int val) {
+		checkParameterSet(Xmp.setPlayer(ctx, Xmp.PLAYER_DEFPAN, val));
+	}
+
+	public void setPlayerMode(final int val) {
+		checkParameterSet(Xmp.setPlayer(ctx, Xmp.PLAYER_MODE, val));
+	}
+
+	public void setMixerType(final int val) {
+		checkParameterSet(Xmp.setPlayer(ctx, Xmp.PLAYER_MIXER_TYPE, val));
+	}
+
+	public void setMaxVoices(final int val) {
+		checkParameterSet(Xmp.setPlayer(ctx, Xmp.PLAYER_VOICES, val));
 	}
 
 	/**
@@ -338,7 +370,7 @@ public class Player {
 
 			if (callback != null && !callback.callback(info, args)) {
 				break;
-			}	
+			}
 		}
 		end();
 
