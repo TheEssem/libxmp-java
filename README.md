@@ -12,7 +12,7 @@ This is a fork of the official JNI bindings for the [libxmp](https://github.com/
 
 Due to the repo being converted to a Gradle project, building is much simpler than the original project, requiring only a working JDK (Java 11 or higher is preferred):
 ```sh
-git clone --recursive https://github.com/TheEssem
+git clone --recursive https://github.com/TheEssem/libxmp-java && cd libxmp-java
 ./gradlew build
 ```
 
