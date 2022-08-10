@@ -1,0 +1,85 @@
+plugins {
+  id "java"
+  id "maven-publish"
+}
+
+import org.apache.tools.ant.taskdefs.condition.Os
+
+apply plugin: "java"
+apply from: "natives.gradle"
+
+version = "1.0.0"
+ext.moduleName = "libxmp-java"
+
+compileJava {
+  options.compilerArgs += ["-h", file("include")]
+}
+
+def extension = Os.isFamily(Os.FAMILY_WINDOWS) ? ".dll" : (Os.isFamily(Os.FAMILY_MAC) ? ".dylib" : ".so")
+
+/*task compileJNI {
+  dependsOn compileJava
+
+  doLast {
+    exec {
+      commandLine "sh", "-c", "mkdir -p build/natives && cd build/natives && cmake ../.. && make"
+    }
+  }
+}*/
+
+clean.doFirst {
+  delete fileTree("include") {
+    include "*.h"
+  }
+}
+
+task sourceJar(type: Jar) {
+  from sourceSets.main.allJava
+}
+
+tasks.withType(JavaCompile) {
+  sourceCompatibility = 1.8
+}
+
+sourceSets {
+  main {
+    java {
+      srcDirs "src"
+    }
+    resources {
+      srcDirs "build/resources/main"
+    }
+  }
+}
+
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      groupId rootProject.group
+      artifactId moduleName
+      from components.java
+
+      artifact sourceJar {
+        classifier 'sources'
+      }
+    }
+  }
+}
+
+task compileNatives() {}
+task checkNatives() {}
+
+processResources {
+  dependsOn compileNatives
+}
+
+def buildTaskConfig = [
+    buildBase: buildDir,
+    projectBase: projectDir,
+    deployBase: "${buildDir}/deploy",
+    compileTask: tasks.compileNatives,
+    checkTask: tasks.checkNatives,
+    name: 'interface'
+]
+
+createBuildTask(tasks, buildTaskConfig)

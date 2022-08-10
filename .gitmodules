@@ -1,0 +1,3 @@
+[submodule "xmpsrc"]
+	path = jni/xmpsrc
+	url = https://github.com/libxmp/libxmp

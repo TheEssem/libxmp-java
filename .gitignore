@@ -4,3 +4,6 @@
 *.so
 .settings
 .*
+include
+build
+bin/
