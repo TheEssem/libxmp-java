@@ -22,6 +22,7 @@
 
 package org.helllabs.libxmp;
 
+import java.io.IOException;
 
 public final class Xmp {
 	
@@ -156,6 +157,14 @@ public final class Xmp {
 	native static void getSampleData(long ctx, int num, Module.Sample sample);
 
 	static {
-		System.loadLibrary("xmp-jni");
+		try {
+			System.loadLibrary("xmp-jni");
+		} catch (UnsatisfiedLinkError e) {
+			try {
+					NativeUtils.loadLibraryFromJar("/natives/" + System.getProperty("os.name").toLowerCase() + "-" + System.getProperty("os.arch") + "/" + System.mapLibraryName("xmp-jni"));
+			} catch (IOException e1) {
+					throw new RuntimeException(e1);
+			}
+	}
 	}
 }

@@ -3,7 +3,7 @@ import org.apache.tools.ant.taskdefs.condition.Os
 def getBuildParameters(base) {
   if (Os.isFamily(Os.FAMILY_WINDOWS)) {
     return [
-        'identifier': "win-x86-64",
+        'identifier': "win-amd64",
         'library': "${base}.dll",
         'setupArguments': ['-DCMAKE_BUILD_TYPE=Release', '-A', 'x64'],
         'buildArguments': ['--config', 'Release'],
@@ -19,7 +19,7 @@ def getBuildParameters(base) {
     ]
   } else {
     return [
-        'identifier': "linux-x86-64",
+        'identifier': "linux-amd64",
         'library': "lib${base}.so",
         'setupArguments': ['-DCMAKE_BUILD_TYPE=Release'],
         'buildArguments': [],
@@ -70,14 +70,14 @@ def createBuildTask(tasksHolder, config) {
 
   def deployTask = tasksHolder.create("${taskBase}-deploy") { doLast {
     copy {
-      from file("${buildDirectory}/jni/libinterface.so")
+      from file("${buildDirectory}/jni/libxmp-jni.so")
       into deployDirectory
     }
   }}
 
   tasksHolder.create("${taskBase}-deploy-only") { doLast {
     copy {
-      from file("${buildDirectory}/jni/libinterface.so")
+      from file("${buildDirectory}/jni/libxmp-jni.so")
       into deployDirectory
     }
   }}
