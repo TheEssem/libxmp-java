@@ -118,6 +118,7 @@ public final class Xmp {
 	native static long createContext();
 	native static void freeContext(long ctx);
 	native static int loadModule(long ctx, String path);
+	native static int loadModuleFromMemory(long ctx, byte[] mem);
 	native static int testModule(String path, Module.TestInfo info);
 	native static void releaseModule(long ctx);
 	native static int startPlayer(long ctx, int freq, int mode);

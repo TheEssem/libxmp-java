@@ -302,6 +302,19 @@ METHOD(jint, loadModule) (JNIEnv *env, jobject obj, jlong ctx, jstring path)
 	return res;
 }
 
+METHOD(jint, loadModuleFromMemory) (JNIEnv *env, jobject obj, jlong ctx, jbyteArray mem)
+{
+    int res;
+
+    size_t len = (*env)->GetArrayLength(env, mem);
+    jbyte *data = (*env)->GetByteArrayElements(env, mem, NULL);
+
+    res = xmp_load_module_from_memory((xmp_context)ctx, (void *)data, len);
+    (*env)->ReleaseByteArrayElements(env, mem, data, 0);
+
+    return res;
+}
+
 METHOD(jint, testModule) (JNIEnv *env, jobject obj, jstring path, jobject info)
 {
 	const char *filename;
@@ -429,10 +442,9 @@ METHOD(int, getPlayer) (JNIEnv *env, jobject obj, jlong ctx, jint param)
 METHOD(jobjectArray, getFormatList) (JNIEnv *env, jobject obj)
 {
 	jobjectArray ret;
-	char **list;
+	char **list = xmp_get_format_list();
 	int i;
 
-	list = xmp_get_format_list();
 	for (i = 0; list[i]; i++);
 	
 	ret = (jobjectArray)(*env)->NewObjectArray(env, i,  

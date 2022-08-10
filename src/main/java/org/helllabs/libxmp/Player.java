@@ -23,6 +23,7 @@
 package org.helllabs.libxmp;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 
@@ -67,7 +68,7 @@ public class Player {
 	}
 	
 	/**
-	 * Load a module into this player context
+	 * Load a module into this player context from a file
 	 * 
 	 * @param path Pathname to the module file to load,
 	 * @return The module just loaded.
@@ -79,6 +80,35 @@ public class Player {
 			throw new IOException(Xmp.ERROR_STRING[-code]);
 		}
 		
+		module = new Module(this);
+
+		return module;
+	}
+
+	/**
+	 * Load a module into this player context from memory
+	 *
+	 * @param mem The raw module data.
+	 * @return The module just loaded.
+	 * @throws IOException
+	 */
+	public Module loadModuleFromMemory(final byte[] mem) throws IOException {
+		final int code = Xmp.loadModuleFromMemory(ctx, mem);
+		if (code < 0) {
+			throw new IOException(Xmp.ERROR_STRING[-code]);
+		}
+
+		module = new Module(this);
+
+		return module;
+	}
+
+	public Module loadModuleFromMemory(final InputStream mem) throws IOException {
+		final int code = Xmp.loadModuleFromMemory(ctx, mem.readAllBytes());
+		if (code < 0) {
+			throw new IOException(Xmp.ERROR_STRING[-code]);
+		}
+
 		module = new Module(this);
 
 		return module;
