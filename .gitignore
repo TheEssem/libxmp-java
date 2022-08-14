@@ -1,7 +1,6 @@
 *.class
 *.o
 *.lo
-*.so
 .settings
 .*
 include

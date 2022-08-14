@@ -6,7 +6,7 @@ This is a fork of the official JNI bindings for the [libxmp](https://github.com/
 - Converted to a Gradle project
 - Restructured the source tree
 - Automatically build libxmp from source
-- Added binding for `xmp_load_module_from_memory`
+- Exposed bindings for some functions/fields that have been added to libxmp since 2014
 
 ## Build
 
