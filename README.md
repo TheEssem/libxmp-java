@@ -8,6 +8,18 @@ This is a fork of the official JNI bindings for the [libxmp](https://github.com/
 - Automatically build libxmp from source
 - Exposed bindings for some functions/fields that have been added to libxmp since 2014
 
+## Usage
+Usage as a library with Gradle is possible like so:
+```groovy
+repositories {
+    maven { url 'https://dankmemeitthefrog.github.io/maven-repo' }
+}
+
+dependencies {
+    implementation "org.helllabs:libxmp-java:1.0.1"
+}
+```
+
 ## Build
 
 Due to the repo being converted to a Gradle project, building is much simpler than the original project, requiring only a working JDK (Java 11 or higher is preferred) and CMake 3.9 or higher:
