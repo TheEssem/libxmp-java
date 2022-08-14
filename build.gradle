@@ -60,5 +60,11 @@ def buildTaskConfig = [
     name: 'xmp-jni'
 ]
 
-createBuildTask(tasks, buildTaskConfig, 32)
-createBuildTask(tasks, buildTaskConfig, 64)
+createBuildTask(tasks, buildTaskConfig, System.getProperty("os.arch"))
+
+task deployAll() {
+  copy {
+    from "${projectDir}/dist"
+    into "${projectDir}/src/main/resources/natives"
+  }
+}

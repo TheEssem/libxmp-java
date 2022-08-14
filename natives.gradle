@@ -1,13 +1,15 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
-static def getBuildParameters(base, bits) {
-  def bitSuffix = (bits == 32) ? 'x86' : 'amd64'
+ext.arch = System.getProperty("os.arch")
+
+static def getBuildParameters(base, arch) {
+  def winArchTypes = ["x86": "Win32", "amd64": "x64", "armhf": "ARM", "aarch64": "ARM64"]
 
   if (Os.isFamily(Os.FAMILY_WINDOWS)) {
     return [
-            'identifier': "win-${bitSuffix}",
+            'identifier': "win-${arch}",
             'library': "${base}.dll",
-            'setupArguments': ["-DBITZ:STRING=${bits}", "-DCMAKE_BUILD_TYPE=Release", '-A', (bits == 64 ? 'x64' : 'Win32')],
+            'setupArguments': ["-DCMAKE_BUILD_TYPE=Release", '-A', winArchTypes.get(arch)],
             'buildArguments': ['--config', 'Release'],
             'env': [:]
     ]
@@ -15,17 +17,17 @@ static def getBuildParameters(base, bits) {
     return [
             'identifier': 'darwin',
             'library': "lib${base}.dylib",
-            'setupArguments': ["-DBITZ:STRING=${bits}", "-DCMAKE_BUILD_TYPE=Release"],
+            'setupArguments': ["-DCMAKE_BUILD_TYPE=Release"],
             'buildArguments': [],
-            'env': ['CXXFLAGS': "-m${bits}", 'CFLAGS': "-m${bits}", 'LDFLAGS': "-m${bits}"]
+            'env': [:]
     ]
   } else {
     return [
-            'identifier': "linux-${bitSuffix}",
+            'identifier': "linux-${arch}",
             'library': "lib${base}.so",
-            'setupArguments': ["-DBITZ:STRING=${bits}", "-DCMAKE_BUILD_TYPE=Release"],
+            'setupArguments': ["-DCMAKE_BUILD_TYPE=Release"],
             'buildArguments': [],
-            'env': ['CXXFLAGS': "-m${bits}", 'CFLAGS': "-m${bits}", 'LDFLAGS': "-m${bits}"]
+            'env': [:]
     ]
   }
 }
@@ -35,12 +37,12 @@ def getHomeDirectory() {
   return directory.name == 'jre' ? directory.parentFile.absolutePath : directory.absolutePath
 }
 
-def createBuildTask(tasksHolder, config, bits) {
-  def parameters = getBuildParameters(config.name, bits)
+def createBuildTask(tasksHolder, config, arch) {
+  def parameters = getBuildParameters(config.name, arch)
   def buildDirectory = "${config.buildBase}/${parameters.identifier}"
   def distDirectory = "${config.projectBase}/dist/${parameters.identifier}"
   def deployDirectory = "${config.deployBase}/src/main/resources/natives/${parameters.identifier}"
-  def taskBase = "${config.name}-${bits}"
+  def taskBase = "${config.name}-${arch}"
 
   parameters.env.put('DIST_DIR', distDirectory)
   parameters.env.put('JAVA_HOME', getHomeDirectory())
@@ -48,7 +50,7 @@ def createBuildTask(tasksHolder, config, bits) {
   def setupTask = tasksHolder.create("${taskBase}-setup", Exec) {
     doFirst {
       if (config.setupDoFirst) {
-        config.setupDoFirst(config, bits)
+        config.setupDoFirst(config, arch)
       }
 
       file(buildDirectory).with {
@@ -71,8 +73,6 @@ def createBuildTask(tasksHolder, config, bits) {
   }
 
   def deployTask = tasksHolder.create("${taskBase}-deploy") { doLast {
-    println distDirectory
-    println deployDirectory
     copy {
       from distDirectory
       into deployDirectory
@@ -99,4 +99,4 @@ def createBuildTask(tasksHolder, config, bits) {
   }
 }
 
-ext.createBuildTask = { tasksHolder, config, bits -> createBuildTask(tasksHolder, config, bits) }
+ext.createBuildTask = { tasksHolder, config, arch -> createBuildTask(tasksHolder, config, arch) }
