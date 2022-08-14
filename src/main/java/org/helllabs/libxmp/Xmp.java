@@ -73,6 +73,19 @@ public final class Xmp {
 	public static final int FLAGS_FIXLOOP = 1 << 2;		// Emulate sample loop bug
 	public static final int FLAGS_A500 = 1 << 3;		// Use Paula mixer in Amiga modules
 
+	// player modes
+	public static final int MODE_AUTO = 0;         		// Autodetect mode
+	public static final int MODE_MOD = 1;         		// Play as a generic MOD player
+	public static final int MODE_NOISETRACKER = 2; 		// Play using Noisetracker quirks
+	public static final int MODE_PROTRACKER = 3;  		// Play using Protracker 1/2 quirks
+	public static final int MODE_S3M = 4;         		// Play as a generic S3M player
+	public static final int MODE_ST3 = 5;          		// Play using ST3 bug emulation
+	public static final int MODE_ST3GUS = 6;      		// Play using ST3+GUS quirks
+	public static final int MODE_XM = 7;          		// Play as a generic XM player
+	public static final int MODE_FT2 = 8;         		// Play using FT2 bug emulation
+	public static final int MODE_IT = 9;          		// Play using IT quirks
+	public static final int MODE_ITSMP = 10;       		// Play using IT sample mode quirks
+
 	// sample flags
 	public static final int SMPCTL_SKIP = 1 << 0;		// Don't load samples
 
