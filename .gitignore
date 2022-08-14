@@ -7,3 +7,5 @@
 include
 build
 bin/
+**/resources/natives
+.idea/

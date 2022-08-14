@@ -27,7 +27,5 @@ if(NOT EXISTS "${PROJECT_SOURCE_DIR}/jni/xmpsrc/CMakeLists.txt")
     message(FATAL_ERROR "The submodules were not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
 endif()
 
-# target_link_libraries(${PROJECT_NAME} build/natives/libxmp.a)
-
 include_directories(include jni/xmpsrc/include)
 add_subdirectory(jni)

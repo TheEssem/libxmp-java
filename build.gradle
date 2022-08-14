@@ -16,18 +16,6 @@ compileJava {
   options.compilerArgs += ["-h", file("include")]
 }
 
-def extension = Os.isFamily(Os.FAMILY_WINDOWS) ? ".dll" : (Os.isFamily(Os.FAMILY_MAC) ? ".dylib" : ".so")
-
-/*task compileJNI {
-  dependsOn compileJava
-
-  doLast {
-    exec {
-      commandLine "sh", "-c", "mkdir -p build/natives && cd build/natives && cmake ../.. && make"
-    }
-  }
-}*/
-
 clean.doFirst {
   delete fileTree("include") {
     include "*.h"
@@ -40,17 +28,6 @@ task sourceJar(type: Jar) {
 
 tasks.withType(JavaCompile) {
   sourceCompatibility = 11
-}
-
-sourceSets {
-  main {
-    java {
-      srcDirs "src"
-    }
-    resources {
-      srcDirs "build/deploy/src/main/resources"
-    }
-  }
 }
 
 publishing {
@@ -71,16 +48,17 @@ task compileNatives() {}
 task checkNatives() {}
 
 processResources {
-  dependsOn compileNatives
+  dependsOn checkNatives
 }
 
 def buildTaskConfig = [
     buildBase: buildDir,
     projectBase: projectDir,
-    deployBase: "${buildDir}/deploy",
+    deployBase: projectDir,
     compileTask: tasks.compileNatives,
     checkTask: tasks.checkNatives,
     name: 'xmp-jni'
 ]
 
-createBuildTask(tasks, buildTaskConfig)
+createBuildTask(tasks, buildTaskConfig, 32)
+createBuildTask(tasks, buildTaskConfig, 64)
