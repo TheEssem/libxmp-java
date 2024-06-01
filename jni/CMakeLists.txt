@@ -1,3 +1,6 @@
+if(MSVC)
+	add_definitions(/DBUILDING_STATIC)
+endif()
 add_subdirectory(xmpsrc)
 
 if (DEFINED ENV{DIST_DIR})

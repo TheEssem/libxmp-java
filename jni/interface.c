@@ -442,7 +442,7 @@ METHOD(int, getPlayer) (JNIEnv *env, jobject obj, jlong ctx, jint param)
 METHOD(jobjectArray, getFormatList) (JNIEnv *env, jobject obj)
 {
 	jobjectArray ret;
-	char **list = xmp_get_format_list();
+	const char *const *list = xmp_get_format_list();
 	int i;
 
 	for (i = 0; list[i]; i++);
@@ -517,7 +517,11 @@ METHOD(int, getErrno) (JNIEnv *env, jobject obj)
 METHOD(jobject, getStrError) (JNIEnv *env, jobject obj, jint err)
 {
 	char c[128];
+#if defined (__WIN32__)
+	strerror_s(c, 128, err);
+#else
 	strerror_r(err, c, 128);
+#endif
 	return (*env)->NewStringUTF(env, c);
 }
 
