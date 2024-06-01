@@ -180,7 +180,7 @@ public final class Xmp {
 			System.loadLibrary("xmp-jni");
 		} catch (UnsatisfiedLinkError e) {
 			try {
-					NativeUtils.loadLibraryFromJar("/natives/" + System.getProperty("os.name").toLowerCase().split(" ")[0] + "-" + System.getProperty("os.arch") + "/" + System.mapLibraryName("xmp-jni"));
+					NativeUtils.loadLibraryFromJar("/natives/" + NativeUtils.getPlatformName() + "/" + System.mapLibraryName("xmp-jni"));
 			} catch (IOException e1) {
 					throw new RuntimeException(e1);
 			}

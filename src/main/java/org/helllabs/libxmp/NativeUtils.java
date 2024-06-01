@@ -118,6 +118,18 @@ public class NativeUtils {
         }
     }
 
+    public static String getPlatformName() {
+        String osName = System.getProperty("os.name").toLowerCase().split(" ")[0];
+        switch (osName) {
+            case "windows":
+                return "win-" + System.getProperty("os.arch");
+            case "mac":
+                return "darwin";
+            default:
+                return osName + "-" + System.getProperty("os.arch");
+        }
+    }
+
     private static boolean isPosixCompliant() {
         try {
             return FileSystems.getDefault()
