@@ -16,13 +16,13 @@ repositories {
 }
 
 dependencies {
-    implementation "org.helllabs:libxmp-java:1.0.2"
+    implementation "org.helllabs:libxmp-java:1.0.3"
 }
 ```
 
 ## Build
 
-Due to the repo being converted to a Gradle project, building is much simpler than the original project, requiring only a working JDK (Java 11 or higher is preferred) and CMake 3.9 or higher:
+Due to the repo being converted to a Gradle project, building is much simpler than the original project, requiring only a working JDK (Java 17 or higher is preferred) and CMake 3.9 or higher:
 ```sh
 git clone --recursive https://github.com/TheEssem/libxmp-java && cd libxmp-java
 ./gradlew build

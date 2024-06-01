@@ -9,7 +9,7 @@ apply plugin: "java"
 apply from: "natives.gradle"
 
 group = "org.helllabs"
-version = "1.0.2"
+version = "1.0.3"
 ext.moduleName = "libxmp-java"
 
 compileJava {
@@ -27,7 +27,7 @@ task sourceJar(type: Jar) {
 }
 
 tasks.withType(JavaCompile) {
-  sourceCompatibility = 11
+  sourceCompatibility = 17
 }
 
 publishing {
