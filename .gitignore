@@ -2,9 +2,11 @@
 *.o
 *.lo
 .settings
-.*
 include
 build
 bin/
 **/resources/natives
 .idea/
+.cache/
+.gradle/
+.vscode/
