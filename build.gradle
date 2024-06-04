@@ -60,7 +60,7 @@ def buildTaskConfig = [
     name: 'xmp-jni'
 ]
 
-createBuildTask(tasks, buildTaskConfig, System.getProperty("os.arch"))
+createBuildTask(tasks, buildTaskConfig, System.getenv("TARGET_ARCH") ?: System.getProperty("os.arch"))
 
 task deployAll() {
   copy {
