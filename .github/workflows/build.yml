@@ -6,10 +6,6 @@ on:
   release:
     types: [published]
 
-defaults:
-  run:
-    working-directory: ${{github.workspace}}
-
 jobs:
   build_natives:
     strategy:
@@ -41,6 +37,9 @@ jobs:
             out_name: xmp-jni.dll
     name: Build natives (${{matrix.platform.name}})
     runs-on: ${{matrix.platform.os}}
+    defaults:
+      run:
+        working-directory: ${{github.workspace}}
     env:
       DIST_DIR: ${{github.workspace}}/dist/${{matrix.platform.key}}
       CC: ${{matrix.platform.cc}}
