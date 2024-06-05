@@ -55,7 +55,7 @@ jobs:
         run: rm -rf ${{github.workspace}}/dist
       - name: Remove existing natives (Windows)
         if: matrix.platform.os == 'windows-2022'
-        run: rmdir /s ${{github.workspace}}\dist
+        run: rd -r "${{github.workspace}}\dist"
       - name: Configure natives
         run: cmake -DCMAKE_BUILD_TYPE=Release -S ${{github.workspace}} -B ${{github.workspace}}/build
       - name: Build natives
