@@ -1,6 +1,8 @@
 if(MSVC)
 	add_definitions(/DBUILDING_STATIC)
 endif()
+set(BUILD_SHARED OFF CACHE BOOL "Build libXMP shared library" FORCE)
+set(LIBXMP_DOCS OFF CACHE BOOL "Build the library documentation" FORCE)
 add_subdirectory(xmpsrc)
 
 if (DEFINED ENV{DIST_DIR})
