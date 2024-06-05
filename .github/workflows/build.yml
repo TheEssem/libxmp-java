@@ -64,7 +64,7 @@ jobs:
       - name: Upload natives
         uses: actions/upload-artifact@v4
         with:
-          name: natives
+          name: natives-${{matrix.platform.key}}
           path: ${{github.workspace}}/dist/
   
   package:
@@ -85,7 +85,7 @@ jobs:
       - name: Download natives
         uses: actions/download-artifact@v4
         with:
-          name: natives
+          merge-multiple: true
           path: ${{github.workspace}}/dist
 
       - name: Build JAR
