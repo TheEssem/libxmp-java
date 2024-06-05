@@ -6,6 +6,10 @@ on:
   release:
     types: [published]
 
+defaults:
+  run:
+    working-directory: ${{github.workspace}}
+
 jobs:
   build_natives:
     strategy:
@@ -57,15 +61,15 @@ jobs:
         if: matrix.platform.os == 'windows-2022'
         run: rd -r "${{github.workspace}}\dist"
       - name: Configure natives
-        run: cmake -DCMAKE_BUILD_TYPE=Release -S ${{github.workspace}} -B ${{github.workspace}}/build
+        run: cmake -DCMAKE_BUILD_TYPE=Release -S ${{github.workspace}} -B build
       - name: Build natives
-        run: cmake --build ${{github.workspace}}/build
+        run: cmake --build build
 
       - name: Upload natives
         uses: actions/upload-artifact@v4
         with:
           name: natives-${{matrix.platform.key}}
-          path: ${{github.workspace}}/dist/
+          path: dist
   
   package:
     runs-on: ubuntu-22.04
@@ -89,7 +93,8 @@ jobs:
           path: ${{github.workspace}}/dist
 
       - name: Build JAR
-        run: ./gradlew build
+        # don't want to rebuild the natives here and running both in a single command will attempt to do that
+        run: ./gradlew deployAll && ./gradlew build
 
       - name: Upload JAR
         uses: actions/upload-artifact@v4
