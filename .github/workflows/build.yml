@@ -1,0 +1,89 @@
+name: Build
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build_natives:
+    strategy:
+      matrix:
+        platform:
+          - name: Linux amd64
+            os: ubuntu-22.04
+            key: linux-amd64
+            arch: amd64
+            cc: gcc
+            out_name: libxmp-jni.so
+          - name: Linux x86
+            os: ubuntu-22.04
+            key: linux-x86
+            arch: x86
+            cc: i686-linux-gnu-gcc
+            out_name: libxmp-jni.so
+          - name: Linux aarch64
+            os: ubuntu-22.04
+            key: linux-aarch64
+            arch: aarch64
+            cc: aarch64-linux-gnu-gcc
+            out_name: libxmp-jni.so
+          - name: Windows amd64
+            os: windows-2022
+            key: win-amd64
+            arch: amd64
+            cc: cl
+            out_name: xmp-jni.dll
+    name: Build natives (${{matrix.platform.name}})
+    runs-on: ${{matrix.platform.os}}
+    env:
+      DIST_DIR: ${{github.workspace}}/dist/${{matrix.platform.arch}}
+      CC: ${{matrix.platform.cc}}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install aarch64 cross-compiler (Linux)
+        if: matrix.platform.key == 'linux-aarch64'
+        run: sudo apt update && sudo apt install -y gcc-aarch64-linux-gnu
+      - name: Install x86 cross-compiler (Linux)
+        if: matrix.platform.key == 'linux-x86'
+        run: sudo apt update && sudo apt install -y gcc-i686-linux-gnu
+
+      - name: Configure natives
+        run: cmake -DCMAKE_BUILD_TYPE=Release -S ${{github.workspace}} -B ${{github.workspace}}/build
+      - name: Build natives
+        run: cmake --build ${{github.workspace}}/build
+
+      - name: Upload natives
+        uses: actions/upload-artifact@v4
+        with:
+          name: natives
+          path: ${{github.workspace}}/dist/
+  
+  package:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: 17
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Remove existing natives
+        run: rm -rf ${{github.workspace}}/dist
+      - name: Download natives
+        uses: actions/download-artifact@v4
+        with:
+          name: natives
+          path: ${{github.workspace}}/dist
+
+      - name: Build JAR
+        run: ./gradlew build
+
+      - name: Upload JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: libxmp-java.zip
+          path: ${{github.workspace}}/build/libs/*.jar
