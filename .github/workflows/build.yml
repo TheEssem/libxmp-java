@@ -34,14 +34,13 @@ jobs:
             key: win-amd64
             arch: amd64
             cc: cl
-            out_name: xmp-jni.dll
+            out_name: Release/xmp-jni.dll
     name: Build natives (${{matrix.platform.name}})
     runs-on: ${{matrix.platform.os}}
     defaults:
       run:
         working-directory: ${{github.workspace}}
     env:
-      DIST_DIR: ${{github.workspace}}/dist/${{matrix.platform.key}}
       CC: ${{matrix.platform.cc}}
     steps:
       - uses: actions/checkout@v4
@@ -53,22 +52,16 @@ jobs:
         if: matrix.platform.key == 'linux-x86'
         run: sudo apt update && sudo apt install -y gcc-i686-linux-gnu
 
-      - name: Remove existing natives (Linux)
-        if: matrix.platform.os == 'ubuntu-22.04'
-        run: rm -rf ${{github.workspace}}/dist
-      - name: Remove existing natives (Windows)
-        if: matrix.platform.os == 'windows-2022'
-        run: rd -r "${{github.workspace}}\dist"
       - name: Configure natives
         run: cmake -DCMAKE_BUILD_TYPE=Release -S ${{github.workspace}} -B build
       - name: Build natives
-        run: cmake --build build
+        run: cmake --build build --config Release
 
       - name: Upload natives
         uses: actions/upload-artifact@v4
         with:
-          name: natives-${{matrix.platform.key}}
-          path: dist
+          name: ${{matrix.platform.key}}
+          path: build/jni/${{matrix.platform.out_name}}
   
   package:
     runs-on: ubuntu-22.04
@@ -88,7 +81,6 @@ jobs:
       - name: Download natives
         uses: actions/download-artifact@v4
         with:
-          merge-multiple: true
           path: ${{github.workspace}}/dist
 
       - name: Build JAR
