@@ -76,8 +76,6 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Remove existing natives
-        run: rm -rf ${{github.workspace}}/dist
       - name: Download natives
         uses: actions/download-artifact@v4
         with:
