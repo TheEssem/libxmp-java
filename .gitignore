@@ -10,3 +10,4 @@ bin/
 .cache/
 .gradle/
 .vscode/
+dist/
