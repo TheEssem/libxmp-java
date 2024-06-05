@@ -517,7 +517,7 @@ METHOD(int, getErrno) (JNIEnv *env, jobject obj)
 METHOD(jobject, getStrError) (JNIEnv *env, jobject obj, jint err)
 {
 	char c[128];
-#if defined (__WIN32__)
+#if defined(__WIN32__) || defined(_WIN32)
 	strerror_s(c, 128, err);
 #else
 	strerror_r(err, c, 128);
