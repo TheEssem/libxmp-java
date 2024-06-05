@@ -90,5 +90,5 @@ jobs:
       - name: Upload JAR
         uses: actions/upload-artifact@v4
         with:
-          name: libxmp-java.zip
+          name: libxmp-java
           path: ${{github.workspace}}/build/libs/*.jar
