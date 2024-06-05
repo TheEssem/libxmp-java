@@ -38,7 +38,7 @@ jobs:
     name: Build natives (${{matrix.platform.name}})
     runs-on: ${{matrix.platform.os}}
     env:
-      DIST_DIR: ${{github.workspace}}/dist/${{matrix.platform.arch}}
+      DIST_DIR: ${{github.workspace}}/dist/${{matrix.platform.key}}
       CC: ${{matrix.platform.cc}}
     steps:
       - uses: actions/checkout@v4
@@ -50,6 +50,8 @@ jobs:
         if: matrix.platform.key == 'linux-x86'
         run: sudo apt update && sudo apt install -y gcc-i686-linux-gnu
 
+      - name: Remove existing natives
+        run: rm -rf ${{github.workspace}}/dist
       - name: Configure natives
         run: cmake -DCMAKE_BUILD_TYPE=Release -S ${{github.workspace}} -B ${{github.workspace}}/build
       - name: Build natives
@@ -63,6 +65,7 @@ jobs:
   
   package:
     runs-on: ubuntu-22.04
+    needs: [build_natives]
     steps:
       - uses: actions/checkout@v4
       - name: Setup Java
