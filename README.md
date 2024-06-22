@@ -12,11 +12,11 @@ This is a fork of the official JNI bindings for the [libxmp](https://github.com/
 Usage as a library with Gradle is possible like so:
 ```groovy
 repositories {
-    maven { url 'https://dankmemeitthefrog.github.io/maven-repo' }
+    maven { url 'https://projectlounge.pw/maven/releases' }
 }
 
 dependencies {
-    implementation "org.helllabs:libxmp-java:1.0.3"
+    implementation "org.helllabs:libxmp-java:1.0.4"
 }
 ```
 

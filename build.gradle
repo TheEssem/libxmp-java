@@ -9,7 +9,7 @@ apply plugin: "java"
 apply from: "natives.gradle"
 
 group = "org.helllabs"
-version = "1.0.3"
+version = "1.0.4"
 ext.moduleName = "libxmp-java"
 
 compileJava {
@@ -32,13 +32,21 @@ tasks.withType(JavaCompile) {
 
 publishing {
   publications {
-    mavenJava(MavenPublication) {
+    maven(MavenPublication) {
       groupId rootProject.group
       artifactId moduleName
+      version rootProject.version
       from components.java
+    }
+  }
 
-      artifact sourceJar {
-        archiveClassifier.set('sources')
+  repositories {
+    maven {
+      name = "projectlounge"
+      url = "https://repo.projectlounge.pw/maven/releases"
+      credentials(PasswordCredentials)
+      authentication {
+        basic(BasicAuthentication)
       }
     }
   }

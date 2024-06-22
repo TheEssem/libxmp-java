@@ -2,7 +2,6 @@ name: Build
 
 on:
   push:
-    branches: [master]
   release:
     types: [published]
 
@@ -85,8 +84,33 @@ jobs:
         # don't want to rebuild the natives here and running both in a single command will attempt to do that
         run: ./gradlew deployAll && ./gradlew build
 
+      - name: Publish to Maven
+        if: github.event_name == 'release'
+        run: ./gradlew publish
+        env:
+          MAVEN_NAME: ${{ secrets.MAVEN_NAME }}
+          MAVEN_SECRET: ${{ secrets.MAVEN_SECRET }}
+
       - name: Upload JAR
         uses: actions/upload-artifact@v4
         with:
           name: libxmp-java
           path: ${{github.workspace}}/build/libs/*.jar
+
+  release:
+    runs-on: ubuntu-22.04
+    needs: [package]
+    if: github.event_name == 'release'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: libxmp-java
+
+      - name: Upload Artifacts to GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: '*.jar'
