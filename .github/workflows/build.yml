@@ -86,7 +86,7 @@ jobs:
 
       - name: Publish to Maven
         if: github.event_name == 'release'
-        run: ./gradlew publish
+        run: ./gradlew publish -PprojectloungeUsername=$MAVEN_NAME -projectloungePassword=$MAVEN_SECRET
         env:
           MAVEN_NAME: ${{ secrets.MAVEN_NAME }}
           MAVEN_SECRET: ${{ secrets.MAVEN_SECRET }}
