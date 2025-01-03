@@ -9,7 +9,7 @@ apply plugin: "java"
 apply from: "natives.gradle"
 
 group = "org.helllabs"
-version = "1.0.4"
+version = "1.0.5"
 ext.moduleName = "libxmp-java"
 
 compileJava {

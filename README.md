@@ -16,7 +16,7 @@ repositories {
 }
 
 dependencies {
-    implementation "org.helllabs:libxmp-java:1.0.4"
+    implementation "org.helllabs:libxmp-java:1.0.5"
 }
 ```
 
