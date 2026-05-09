@@ -429,7 +429,7 @@ METHOD(void, endPlayer) (JNIEnv *env, jobject obj, jlong ctx)
 	xmp_end_player((xmp_context)ctx);
 }
 
-METHOD(int, setPlayer) (JNIEnv *env, jobject obj, jlong ctx, jint param, jlong value)
+METHOD(int, setPlayer) (JNIEnv *env, jobject obj, jlong ctx, jint param, jint value)
 {
 	return xmp_set_player((xmp_context)ctx, param, value);
 }
